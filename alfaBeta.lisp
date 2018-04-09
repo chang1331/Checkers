@@ -1,20 +1,26 @@
-(defvar h fin)
-(setq pila nil cerrado nil nodo nil poda nil)
-;nodo=(id padre ini fin v)
+(defvar h finJuego)
+(setq tablero nil pila nil cerrado nil nodo nil poda nil)
+;nodo=(id padre cMov ini fin v)
 
-(defun ab(node depth a b player)
-	(cond ((or (EQ depth 0) fin) (calculaH) (setf (nth 5 nodo) h) (cond((< a b) (cond((EQ player 1)(cond((a<h) (revierteTab)  )
+(defun ab(node depth a b)
+
+	(cond ((or (EQ depth 0) (finJuego)) (calculaH) (setf (nth 5 nodo) h) (cond((< a b) (cond((EQ player 1)(cond((a<h) (revierteTab)  )
 																		(t)))
 													(t (cond((b>h)(setq b h))
 																  (t)))) (generaNodo))
 											(t (setq poda t))))
-			(t (cond(((not poda) (sigMov) (push nodo pila) (ab nodo (decf depth) a b 1)))
-					(t ()   ))))
+			(t (cond((EQ (nth 2 node) 0) (ab (pop pila) (incf depth) a b))
+					(t (cond((>= a b) (ab (pop pila) (incf depth) a b) )
+						(t(setq nodo (sigMov node)) (push nodo pila) (ab nodo (decf depth) a b 1)))))))
 	)
 
-(defun sigMov)
+(defun sigMov(nodo))
 
-(defun generanodo)
+(defun generanodo())
+
+(defun calculaH())
+
+(defun finJuego())
 
 
 
