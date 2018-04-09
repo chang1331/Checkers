@@ -4,14 +4,14 @@
 
 (defun ab(node depth a b)
 
-	(cond ((or (EQ depth 0) (finJuego)) (calculaH) (setf (nth 5 nodo) h) (cond((< a b) (cond((EQ player 1)(cond((a<h) (revierteTab)  )
+	(cond ((or (EQ depth 0) (finJuego)) (calculaH) (setf (nth 5 node) h) (cond((< a b) (cond((EQ (mod depth 2) 0 ) (cond((a<h) (revierteTab node)    )
 																		(t)))
 													(t (cond((b>h)(setq b h))
 																  (t)))) (generaNodo))
 											(t (setq poda t))))
-			(t (cond((EQ (nth 2 node) 0) (ab (pop pila) (incf depth) a b))
-					(t (cond((>= a b) (ab (pop pila) (incf depth) a b) )
-						(t(setq nodo (sigMov node)) (push nodo pila) (ab nodo (decf depth) a b 1)))))))
+			(t (cond((not(movDispo node)) (push (pop pila) cerrado) (revierteTab node) (setq nodo (sigMov)) (push nodo pila)  (ab nodo depth a b))
+					(t (cond((>= a b) (push (pop pila) cerrado) (ab  (car pila) (incf depth) a b))
+						(t(setq nodo (sigMov node)) (push nodo pila) (ab nodo (decf depth) a b)))))))
 	)
 
 (defun sigMov(nodo))
@@ -19,6 +19,8 @@
 (defun generanodo())
 
 (defun calculaH())
+
+(defun revierteTab())
 
 (defun finJuego())
 
