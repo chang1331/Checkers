@@ -32,9 +32,9 @@
             this.Pcanvas = new System.Windows.Forms.Panel();
             this.btnJugar = new System.Windows.Forms.Button();
             this.gbDificultada = new System.Windows.Forms.GroupBox();
-            this.rbFacil = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.rbFacil = new System.Windows.Forms.RadioButton();
             this.gbDificultada.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,10 +42,11 @@
             // 
             this.Pcanvas.BackColor = System.Drawing.Color.PaleVioletRed;
             this.Pcanvas.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Pcanvas.BackgroundImage")));
-            this.Pcanvas.Location = new System.Drawing.Point(100, 100);
+            this.Pcanvas.Location = new System.Drawing.Point(103, 100);
             this.Pcanvas.Name = "Pcanvas";
             this.Pcanvas.Size = new System.Drawing.Size(820, 760);
             this.Pcanvas.TabIndex = 0;
+            this.Pcanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Pcanvas_Paint);
             // 
             // btnJugar
             // 
@@ -55,6 +56,7 @@
             this.btnJugar.TabIndex = 1;
             this.btnJugar.Text = "¡Jugar!";
             this.btnJugar.UseVisualStyleBackColor = true;
+            this.btnJugar.Click += new System.EventHandler(this.btnJugar_Click);
             // 
             // gbDificultada
             // 
@@ -68,16 +70,16 @@
             this.gbDificultada.TabStop = false;
             this.gbDificultada.Text = "Dificultad";
             // 
-            // rbFacil
+            // radioButton3
             // 
-            this.rbFacil.AutoSize = true;
-            this.rbFacil.Location = new System.Drawing.Point(19, 22);
-            this.rbFacil.Name = "rbFacil";
-            this.rbFacil.Size = new System.Drawing.Size(58, 21);
-            this.rbFacil.TabIndex = 0;
-            this.rbFacil.TabStop = true;
-            this.rbFacil.Text = "Fácil";
-            this.rbFacil.UseVisualStyleBackColor = true;
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Location = new System.Drawing.Point(19, 73);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(62, 21);
+            this.radioButton3.TabIndex = 2;
+            this.radioButton3.TabStop = true;
+            this.radioButton3.Text = "Difícil";
+            this.radioButton3.UseVisualStyleBackColor = true;
             // 
             // radioButton2
             // 
@@ -90,16 +92,16 @@
             this.radioButton2.Text = "Intermedio";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
-            // radioButton3
+            // rbFacil
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(19, 73);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(62, 21);
-            this.radioButton3.TabIndex = 2;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "Difícil";
-            this.radioButton3.UseVisualStyleBackColor = true;
+            this.rbFacil.AutoSize = true;
+            this.rbFacil.Location = new System.Drawing.Point(19, 22);
+            this.rbFacil.Name = "rbFacil";
+            this.rbFacil.Size = new System.Drawing.Size(58, 21);
+            this.rbFacil.TabIndex = 0;
+            this.rbFacil.TabStop = true;
+            this.rbFacil.Text = "Fácil";
+            this.rbFacil.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
