@@ -136,14 +136,14 @@ namespace Checkers
                                 im[i, j] = Image.FromFile(@".\Imagenes\cC.jpg");
                                 fichas[i, j] = Image.FromFile(@".\Imagenes\blanca.png");
                                 e.Graphics.DrawImage(im[i, j], i * 70 + 30, j * 70 + 30, 70, 70);
-                                e.Graphics.DrawImage(fichas[i, j], i * 70 + 35, j * 70 + 35, 60, 60);
+                                e.Graphics.DrawImage(fichas[i, j], i * 70 + 33, j * 70 + 33, 66, 66);
                             }
                             else if (j > 4)
                             {
                                 im[i, j] = Image.FromFile(@".\Imagenes\cC.jpg");
                                 fichas[i, j] = Image.FromFile(@".\Imagenes\negra2.png");
                                 e.Graphics.DrawImage(im[i, j], i * 70 + 30, j * 70 + 30, 70, 70);
-                                e.Graphics.DrawImage(fichas[i, j], i * 70 + 35, j * 70 + 35, 60, 60);
+                                e.Graphics.DrawImage(fichas[i, j], i * 70 + 33, j * 70 + 33, 66, 66);
                             }
                             else
                             {
@@ -164,14 +164,14 @@ namespace Checkers
                                 im[i, j] = Image.FromFile(@".\Imagenes\cC.jpg");
                                 fichas[i, j] = Image.FromFile(@".\Imagenes\blanca.png");
                                 e.Graphics.DrawImage(im[i, j], i * 70 + 30, j * 70 + 30, 70, 70);
-                                e.Graphics.DrawImage(fichas[i, j], i * 70 + 35, j * 70 + 35, 60, 60);
+                                e.Graphics.DrawImage(fichas[i, j], i * 70 + 33, j * 70 + 33, 66, 66);
                             }
                             else if (j > 4)
                             {
                                 im[i, j] = Image.FromFile(@".\Imagenes\cC.jpg");
                                 fichas[i, j] = Image.FromFile(@".\Imagenes\negra2.png");
                                 e.Graphics.DrawImage(im[i, j], i * 70 + 30, j * 70 + 30, 70, 70);
-                                e.Graphics.DrawImage(fichas[i, j], i * 70 + 35, j * 70 + 35, 60, 60);
+                                e.Graphics.DrawImage(fichas[i, j], i * 70 + 33, j * 70 + 33, 66, 66);
                             }
                             else
                             {
