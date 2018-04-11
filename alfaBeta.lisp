@@ -1,24 +1,38 @@
 (defvar h finJuego)
-(setq tablero nil pila nil cerrado nil nodo nil poda nil)
-;nodo=(id padre cMov ini fin v)
+(setq tablero '() pila nil cerrado nil nodo nil poda nil)
+(setq hPieza 0 hPos 0 hmovT 0 hpatron 0 sumadist 0)
+;nodo=(id padre cMov inix iniy finx finy  v)
 
+
+(defun inicio(dep)
+	(push '(1 nil 0 nil nil nil nil nil) pila)
+	ab((car pila) dep -999999 999999)
+
+	)
 (defun ab(node depth a b)
-
 	(cond ((or (EQ depth 0) (finJuego)) (calculaH) (setf (nth 5 node) h) (revierteTab node) (cond((< a b) (cond((EQ (mod depth 2) 0 ) (cond((a<h)     )
 																		(t)))
 													(t (cond((b>h)(setq b h))
 																  (t)))) (generaNodo))
 											(t (setq poda t))))
-			(t (cond(((> (nth 3 node) 8)) (push (pop pila) cerrado) (revierteTab node) (setq nodo (sigMov)) (push nodo pila)  (ab nodo depth a b))
+			(t (cond((> (nth 2 node) 12) (push (pop pila) cerrado) (revierteTab node) (setq nodo (sigMov)) (push nodo pila)  (ab nodo depth a b))
 					(t (cond((>= a b) (push (pop pila) cerrado) (ab  (car pila) (incf depth) a b))
-						(t(setq nodo (sigMov node)) (push nodo pila) (ab nodo (decf depth) a b)))))))
+						(t (setq nodo (generaNodo node depth)) (push nodo pila) (ab nodo (decf depth) a b)))))))
 	)
+
+
+
 
 (defun sigMov(nodo))
 
-(defun generanodo())
+(defun generaNodo(nodo depth))
 
-(defun calculaH())
+(defun calculaH()
+	(setq hPieza cuentaPiezas()))
+
+(defun cuentaPiezas()
+	())
+
 
 (defun revierteTab())
 
