@@ -1,6 +1,6 @@
 (setq h 0 finJuego 0)
 (setq tablero '() pila nil cerrado nil nodo nil poda nil)
-(setq hPieza 0 hPos 0 hmovT 0 patronH 0 sumadist 0)
+(setq hPieza 0 hPos 0 hMov 0 patronH 0 sumadist 0)
 
 (setq tabPeonY '((nil 0 nil 0 nil 0 nil 0)
 			     (6 nil 5 nil 5 nil 5 nil)
@@ -55,7 +55,7 @@
 (defun generaNodo(nodo depth))
 
 (defun calculaH()
-	(setq h (+ (cuentaPiezasH) (posTab) (patrones))))
+	(setq h (+ (cuentaPiezasH) (posTab) (hMov))))
 
 
 
@@ -74,7 +74,7 @@
 									((EQ (nth i x) 2) (incf c 13))  ;pos con mi rey
 									((EQ (nth i x) -1) (decf c 10)) ;pos con su peón
 									(t (decf c 13)))))))            ;pos con su rey
-									c))          
+c))          
 	
 
 (defun posTab()
@@ -93,8 +93,30 @@
 								 (t (decf hPos (nth j (nth i tabRey)))))))))
 hPos)           ;pos con su rey
 								
-(defun patrones()
+(defun movimientosH()
+	(loop for i from 0 to 8   ;x= primer elemento de lista Tablero (nil val1 nil val2 nil val3 nil val4)
+  do (cond((EQ (mod i 2) 0) (loop for j from 1 to 7 by 2
+  								do  (cond((EQ (nth j (nth i tablero)) 0))				 ;pos vacia
+  										 ((EQ (nth j (nth i tablero)) 1) (incf hMov (movDispo i j 1)) )  ;mov dispo. para mi peón en (i,j)
+  										 ((EQ (nth j (nth i tablero)) 2) (incf hMov (movDispo i j 2))) ;mov dispo. para mi rey en (i,j)
+  										 ((EQ (nth j (nth i tablero)) -1) (decf hMov (movDispo i j -1))) ;pos con su peón
+  										 (t (decf hMov (movDispo i j -2))))))				 ;pos con su rey
+  			(t (loop for j from 0 to 6 by 2
+					do (cond((EQ (nth j (nth i tablero)) 0))				 ;pos vacia
+							((EQ (nth j (nth i tablero)) 1) (incf hMov (movDispo i j 1)) )  ;mov dispo. para mi peón en (i,j)
+							((EQ (nth j (nth i tablero)) 2) (incf hMov (movDispo i j 2))) ;mov dispo. para mi rey en (i,j)
+							((EQ (nth j (nth i tablero)) -1) (decf hMov (movDispo i j -1))) ;pos con su peón
+							(t (decf hMov (movDispo i j -2))))))))
+hMov)
+
+(defun movDispo(i j pieza)
+	(cond((EQ pieza 1)(cond (EQ ) ))
+		((EQ pieza 2))
+		((EQ pieza -1))
+		(t )
+		)
 	)
+
 (defun revierteTab())
 
 
