@@ -81,21 +81,28 @@
 (loop for i from 0 to 8   ;x= primer elemento de lista Tablero (nil val1 nil val2 nil val3 nil val4)
   do (cond((EQ (mod i 2) 0) (loop for j from 1 to 7 by 2
   								do  (cond((EQ (nth j (nth i tablero)) 0))				 ;pos vacia
-  										 ((EQ (nth j (nth i tablero)) 1) (incf hPos 10))  ;pos con mi peón
-  										 ((EQ (nth i x) 2) (incf c 13))  ;pos con mi rey
-  										 ((EQ (nth i x) -1) (decf c 10)) ;pos con su peón
-  										 (t (decf c 13))))				 ;pos con su rey
+  										 ((EQ (nth j (nth i tablero)) 1) (incf hPos (nth j (nth i tabPeonY))))  ;pos con mi peón
+  										 ((EQ (nth j (nth i tablero)) 2) (incf hPos (nth j (nth i tabRey)))) ;pos con mi rey
+  										 ((EQ (nth j (nth i tablero)) -1) (decf hPos (nth j (nth i tabPeonT)))) ;pos con su peón
+  										 (t (decf hPos (nth j (nth i tabRey)))))))				 ;pos con su rey
   			(t (loop for j from 0 to 6 by 2
-					do (cond((EQ (nth j x) 0))              ;pos vacia     
-								((EQ (nth i x) 1) (incf c 10))  ;pos con mi peón
-								((EQ (nth i x) 2) (incf c 13))  ;pos con mi rey
-								((EQ (nth i x) -1) (decf c 10)) ;pos con su peón
-								(t (decf c 13)))))))           ;pos con su rey
+					do (cond((EQ (nth j (nth i tablero)) 0))				 ;pos vacia
+								 ((EQ (nth j (nth i tablero)) 1) (incf hPos (nth j (nth i tabPeonY))))  ;pos con mi peón
+								 ((EQ (nth j (nth i tablero)) 2) (incf hPos (nth j (nth i tabRey)))) ;pos con mi rey
+								 ((EQ (nth j (nth i tablero)) -1) (decf hPos (nth j (nth i tabPeonT)))) ;pos con su peón
+								 (t (decf hPos (nth j (nth i tabRey)))))))))
+hPos)           ;pos con su rey
 								
-
+(defun patrones()
+	)
 (defun revierteTab())
 
-(defun finJuego())
+
+;checar si hay fichas de ambos jugadores, si ambos tienen fichas checar si tienen movimientos, si uno no tiene movimientos, fin de juego
+(defun finJuego()
+	(loop while (>= row 0) 
+  		do (setf row (- row 1))           ; or better: do (decf row)
+ 		collect (findIndex row col)))
 
 
 

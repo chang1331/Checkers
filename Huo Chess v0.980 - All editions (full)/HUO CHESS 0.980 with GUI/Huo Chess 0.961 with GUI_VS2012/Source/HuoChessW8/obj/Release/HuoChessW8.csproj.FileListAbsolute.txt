@@ -1,0 +1,10 @@
+C:\Users\Jorge\Downloads\Huo Chess v0.980 - All editions (full)\HUO CHESS 0.980 with GUI\Huo Chess 0.961 with GUI_VS2012\Source\HuoChessW8\bin\Release\HuoChessW8.exe.config
+C:\Users\Jorge\Downloads\Huo Chess v0.980 - All editions (full)\HUO CHESS 0.980 with GUI\Huo Chess 0.961 with GUI_VS2012\Source\HuoChessW8\bin\Release\HuoChessW8.exe
+C:\Users\Jorge\Downloads\Huo Chess v0.980 - All editions (full)\HUO CHESS 0.980 with GUI\Huo Chess 0.961 with GUI_VS2012\Source\HuoChessW8\bin\Release\HuoChessW8.pdb
+C:\Users\Jorge\Downloads\Huo Chess v0.980 - All editions (full)\HUO CHESS 0.980 with GUI\Huo Chess 0.961 with GUI_VS2012\Source\HuoChessW8\obj\Release\HuoChessW8.csprojResolveAssemblyReference.cache
+C:\Users\Jorge\Downloads\Huo Chess v0.980 - All editions (full)\HUO CHESS 0.980 with GUI\Huo Chess 0.961 with GUI_VS2012\Source\HuoChessW8\obj\Release\HuoChessW8.Form1.resources
+C:\Users\Jorge\Downloads\Huo Chess v0.980 - All editions (full)\HUO CHESS 0.980 with GUI\Huo Chess 0.961 with GUI_VS2012\Source\HuoChessW8\obj\Release\HuoChessW8.Properties.Resources.resources
+C:\Users\Jorge\Downloads\Huo Chess v0.980 - All editions (full)\HUO CHESS 0.980 with GUI\Huo Chess 0.961 with GUI_VS2012\Source\HuoChessW8\obj\Release\HuoChessW8.csproj.GenerateResource.cache
+C:\Users\Jorge\Downloads\Huo Chess v0.980 - All editions (full)\HUO CHESS 0.980 with GUI\Huo Chess 0.961 with GUI_VS2012\Source\HuoChessW8\obj\Release\HuoChessW8.csproj.CoreCompileInputs.cache
+C:\Users\Jorge\Downloads\Huo Chess v0.980 - All editions (full)\HUO CHESS 0.980 with GUI\Huo Chess 0.961 with GUI_VS2012\Source\HuoChessW8\obj\Release\HuoChessW8.exe
+C:\Users\Jorge\Downloads\Huo Chess v0.980 - All editions (full)\HUO CHESS 0.980 with GUI\Huo Chess 0.961 with GUI_VS2012\Source\HuoChessW8\obj\Release\HuoChessW8.pdb
