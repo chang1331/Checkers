@@ -1,0 +1,10 @@
+D:\Programare\C#\008 - Chess\008\bin\Debug\008.exe
+D:\Programare\C#\008 - Chess\008\bin\Debug\008.pdb
+D:\Programare\C#\008 - Chess\008\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Programare\C#\008 - Chess\008\obj\x86\Debug\_008.Form1.resources
+D:\Programare\C#\008 - Chess\008\obj\x86\Debug\_008.Properties.Resources.resources
+D:\Programare\C#\008 - Chess\008\obj\x86\Debug\GenerateResource.read.1.tlog
+D:\Programare\C#\008 - Chess\008\obj\x86\Debug\GenerateResource.write.1.tlog
+D:\Programare\C#\008 - Chess\008\obj\x86\Debug\008.exe
+D:\Programare\C#\008 - Chess\008\obj\x86\Debug\008.pdb
+D:\Programare\C#\008 - Chess\008\obj\x86\Debug\_008.uC.resources
