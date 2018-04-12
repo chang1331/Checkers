@@ -585,6 +585,12 @@ namespace _008
             validate();
             drawing();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
         void uC_Click(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
