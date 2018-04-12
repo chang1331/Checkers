@@ -11,6 +11,7 @@
 				 (nil 0 nil 0 nil 0 nil 1)
 				 (3 nil 3 nil 3 nil 3 nil)))
 
+
 (setq tabPeonT '((nil 3 nil 3 nil 3 nil 3)
 			     (1 nil 0 nil 0 nil 0 nil)
 				 (nil 1 nil 1 nil 1 nil 2)
@@ -20,14 +21,14 @@
 				 (nil 5 nil 5 nil 5 nil 6)
 				 (0 nil 0 nil 0 nil 0 nil)))
 
-(setq tabRey '((nil 0 nil 0 nil 0 nil 0)
+(setq tabRey '((nil 0 nil 0 nil 0 nil -1)
 			   (0 nil 1 nil 1 nil 1 nil)
 			   (nil 1 nil 2 nil 2 nil 0)
 			   (0 nil 2 nil 4 nil 1 nil)
 			   (nil 1 nil 4 nil 2 nil 0)
 			   (0 nil 2 nil 2 nil 1 nil)
 			   (nil 1 nil 1 nil 1 nil 0)
-			   (0 nil 0 nil 0 nil 0 nil)))
+			   (-1 nil 0 nil 0 nil 0 nil)))
 ;nodo=(id padre cMov inix iniy finx finy  v)
 
 
@@ -36,7 +37,7 @@
 	ab((car pila) dep -999999 999999)
 
 	)
-(defun ab(node depth a b)
+(defun ab(tablero node depth a b)
 	(cond ((or (EQ depth 0) (finJuego)) (calculaH) (setf (nth 5 node) h) (revierteTab node) (cond((< a b) (cond((EQ (mod depth 2) 0 ) (cond((a<h)     )
 																		(t)))
 													(t (cond((b>h)(setq b h))
@@ -49,13 +50,25 @@
 
 
 
+(defun sigMov(prof nodo tab)
+(cond((EQ (mod prof 2) 0) (loop for i from 0 to 7 
+							    do (cond((EQ (mod i 2) 0) (loop for j from 1 to 7 by 2
+							      								do  (cond((EQ (nth j (nth i tab) 0) )
+							      										 ((EQ (nth j (nth i tab) -1)) (generaMov -1 i j (nth 2 nodo) tab)) 	)   )
 
-(defun sigMov(nodo))
+(defun generaMov(tipo i j movHechos tab)
+	(cond((EQ (abs tipo) 1)) (cond((< (tipo) 0)(cond ((EQ (nth (- j 1) (nth (+ i 1) tablero) ) 0) return (list (+ i 1) (- j 1))
+									(t)))
+		(loop while (< movHechos 4)))
+
+(defun saltoSimple())
+
+(defun saltoDoble())
 
 (defun generaNodo(nodo depth))
 
 (defun calculaH()
-	(setq h (+ (cuentaPiezasH) (posTab) (hMov))))
+	(setq h (+ (cuentaPiezasH) (posTab) (hMov) (runAwayH))))
 
 
 
@@ -109,11 +122,9 @@ hPos)           ;pos con su rey
 							(t (decf hMov (movDispo i j -2))))))))
 hMov)
 
-(defun movDispo(i j pieza)
+(defun runAway(i j pieza)
 	(cond((EQ pieza 1)(cond (EQ ) ))
-		((EQ pieza 2))
 		((EQ pieza -1))
-		(t )
 		)
 	)
 
@@ -122,9 +133,8 @@ hMov)
 
 ;checar si hay fichas de ambos jugadores, si ambos tienen fichas checar si tienen movimientos, si uno no tiene movimientos, fin de juego
 (defun finJuego()
-	(loop while (>= row 0) 
-  		do (setf row (- row 1))           ; or better: do (decf row)
- 		collect (findIndex row col)))
+	(loop for i from 0 to 8   ;x= primer elemento de lista Tablero (nil val1 nil val2 nil val3 nil val4)
+  		do (cond(())) ))
 
 
 
