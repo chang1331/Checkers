@@ -1,5 +1,6 @@
 (setq h 0 finJuego 0)
 (setq tablero '() pila nil cerrado nil nodo nil poda nil)
+(setq dobleI nil dobleJ nil)
 (setq hPieza 0 hPos 0 hMov 0 patronH 0 sumadist 0)
 
 (setq tabPeonY '((nil 0 nil 0 nil 0 nil 0)
@@ -54,16 +55,36 @@
 (cond((EQ (mod prof 2) 0) (loop for i from 0 to 7 
 							    do (cond((EQ (mod i 2) 0) (loop for j from 1 to 7 by 2
 							      								do  (cond((EQ (nth j (nth i tab) 0) )
-							      										 ((EQ (nth j (nth i tab) -1)) (generaMov -1 i j (nth 2 nodo) tab)) 	)   )
+							      										 ((EQ (nth j (nth i tab) -1)) (generaMov -1 i j (nth 2 nodo) tab) ) 	)   )
 
 (defun generaMov(tipo i j movHechos tab)
-	(cond((EQ (abs tipo) 1)) (cond((< (tipo) 0)(cond ((EQ (nth (- j 1) (nth (+ i 1) tablero) ) 0) return (list (+ i 1) (- j 1))
-									(t)))
+	(cond((EQ (abs tipo) 1)) (cond((< tipo 0)(cond((and (not (< (- j 1) 0)) (not (> (+ i 1) 7))) 
+															(cond((EQ (nth (- j 1) (nth (+ i 1) tablero) ) 0) (cond((and (not (< (- j 2) 0)) (not (> (+ i 2) 7) ) (EQ (nth (- j 2) (nth (+ i 2) tablero) ) 0))
+																					 								(cond ((saltoDoble (+ i 2) (- j 2)) return (list (dobleI) (dobleJ)))
+																					 									  (t return (list (+ i 2) (- j 2)))))))
+																 (t nil))) 
+															 
+												  (t nil)) ;falta, hacer recursion en genera mov para case 2 		 				
+																					 			
+									(t (cond((and (not (< (- j 1) 0)) (not (> (+ i 1) 7))) 
+															(cond((EQ (nth (- j 1) (reverse (nth (+ i 1) (reverse tablero)))) 0) (cond((and (not (< (- j 2) 0)) (not (> (+ i 2) 7) ) (EQ (nth (- j 2) (reverse (nth (+ i 2) (reverse tablero)))) 0))
+																										 								(cond ((saltoDoble (+ i 2) (- j 2)) return (list (dobleI) (dobleJ)))
+																										 									  (t return (list (+ i 2) (- j 2)))))
+																																		(t return (list (+ i 2) (- j 2)) )))
+																 (t nil))) 
+															 
+												  (t nil)) ;falta, hacer recursion en genera mov para case 2     ))
+
+
+
+
+
+	)
 		(loop while (< movHechos 4)))
 
-(defun saltoSimple())
+(defun saltoDoble(tipo i j)
 
-(defun saltoDoble())
+	)
 
 (defun generaNodo(nodo depth))
 
