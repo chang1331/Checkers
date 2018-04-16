@@ -41,7 +41,7 @@
 			   (-1 nil -1 nil -1 nil -1 nil)
 			   (nil -1 nil -1 nil -1 nil -1)
 			   (-1 nil -1 nil -1 nil -1 nil)))
-
+(setq n '(1 nil 0 tablero nil))
 
 (defun ab(tab node depth a b)
 	(cond ((or (EQ depth 0) (finJuego)) (calculaH))
@@ -66,35 +66,35 @@
 							    do (cond((EQ (mod i 2) 0) (loop for j from 1 to 7 by 2
 							      								do  (cond((EQ (nth j (nth i tab)) 0))
 							      										 ((EQ (nth j (nth i tab)) -1) (setq res (generaMov -1 i j (nth 2 nodo) tab)) 
-							      										 							  (cond(res (return res))
+							      										 							  (cond((not (null res)) (return res))
 							      										 									 (t))) 
 							      										 ((EQ (nth j (nth i tab)) -2) (setq res (generaMov -2 i j (nth 2 nodo) tab))
-							      										 							  (cond(res (return res))
+							      										 							  (cond((not (null res)) (return res))
 							      										 									 (t))))))
 							            (t (loop for j from 0 to 6 by 2
 							      								do  (cond((EQ (nth j (nth i tab)) 0))
 							      										 ((EQ (nth j (nth i tab)) -1) (setq res (generaMov -1 i j (nth 2 nodo) tab))
-							      										 							  (cond(res (return res))
+							      										 							  (cond((not (null res)) (return res))
 							      										 									 (t)))
 							      										 ((EQ (nth j (nth i tab)) -2) (setq res(generaMov -2 i j (nth 2 nodo) tab))
-							      										 							  (cond(res (return res))
+							      										 							  (cond((not (null res)) (return res))
 							      										 									 (t)))))))))
 	(t (loop for i from 0 to 7 
 		    do (cond((EQ (mod i 2) 0) (loop for j from 1 to 7 by 2
 		      								do  (cond((EQ (nth j (nth i tab)) 0))
 		      										 ((EQ (nth j (nth i tab)) 1) (setq res (generaMov 1 i j (nth 2 nodo) tab)) 
-							      										 							  (cond(res (return res))
+							      										 							  (cond((not (null res)) (return res))
 							      										 									 (t)))  
 		      										 ((EQ (nth j (nth i tab)) 2) (setq res (generaMov 2 i j (nth 2 nodo) tab))
-							      										 							  (cond(res (return res))
+							      										 							  (cond((not (null res)) (return res))
 							      										 									 (t))))))
 		            (t (loop for j from 0 to 6 by 2
 		      								do  (cond((EQ (nth j (nth i tab)) 0))
 		      										 ((EQ (nth j (nth i tab)) 1) (setq res (generaMov 1 i j (nth 2 nodo) tab))
-							      										 							  (cond(res (return res))
+							      										 							  (cond((not (null res)) (return res))
 							      										 									 (t))) 
 		      										 ((EQ (nth j (nth i tab)) 2) (setq res(generaMov 2 i j (nth 2 nodo) tab))
-							      										 							  (cond(res (return res))
+							      										 							  (cond((not (null res)) (return res))
 							      										 									 (t)))))))))))
 
 
@@ -119,7 +119,7 @@
 		            (5 (cond((and  (<= (+ j 2) 5) (<= (+ i 2) 5) (EQ (nth (+ j 2) (nth (+ i 2) tablero) ) 0)) (setq mov (list (+ i 2) (+ j 2) 5))) ;SALTO ADELANTE IZQUIERDA
 		            																						  		
 		                    (t (cond((< tipo 0) (setq tab (reversed tab))))  (generaMov tipo i j (incf movHechos) tab))))
-;falta que los reyes no se regresen
+
 		            (6 (cond((and (EQ (abs tipo) 2) (>= (- j 2) 2) (>= (- i 2) 2) (EQ (nth (- j 2) (nth (- i 2) tablero)) 0)) (setq mov (list (- i 2) (- j 2) 6))) ;SALTO ATRÁS DERECHA 
 		                    (t (cond((< tipo 0) (setq tab (reversed tab)))) (generaMov tipo i j (incf movHechos) tab))))
 
@@ -128,10 +128,6 @@
 		           )
 
 				   (list (car mov) (cadr mov) (generaTablero tipo i j (last mov) tab))
-			   			 
-
-
-;faltan las llamadas recursivas
 ;falta coronar 
 			   	)
 
@@ -139,37 +135,40 @@
 		   ((<= movHechos 3) 
 		   	(format t "movHechos en cond: ~D ~%" movHechos)
 		   		(case movHechos
-		            (0 (cond((and  (>= (- j 1) 1) (<= (+ i 1) 6) (EQ (nth (- j 1) (nth (+ i 1) tablero)) 0)) (setq mov (list (+ i 1) (- j 1) 0))) ;ADELANTE DERECHA
+		            (0 (cond((and  (>= (- j 1) 0) (<= (+ i 1) 7) (EQ (nth (- j 1) (nth (+ i 1) tablero)) 0)) (setq mov (list (+ i 1) (- j 1) 0))) ;ADELANTE DERECHA
 		                    (t (cond((< tipo 0) (setq tab (reversed tab)))) (format t "movHechos en case0: ~D ~%" (+ movHechos 1)) (generaMov tipo i j (incf movHechos) tab))))   
 
-		            (1 (cond((and  (<= (+ j 1) 6) (<= (+ i 1) 6) (EQ (nth (+ j 1) (nth (+ i 1) tablero)) 0)) (setq mov (list (+ i 1) (+ j 1) 1))) ;ADELANTE IZQUIERDA
+		            (1 (cond((and  (<= (+ j 1) 7) (<= (+ i 1) 7) (EQ (nth (+ j 1) (nth (+ i 1) tablero)) 0)) (setq mov (list (+ i 1) (+ j 1) 1))) ;ADELANTE IZQUIERDA
 		                    (t (cond((< tipo 0) (setq tab (reversed tab)))) (format t "movHechos en case1: ~D ~%" (+ movHechos 1))  (generaMov tipo i j (incf movHechos) tab))))
 
-		            (2 (cond((and (EQ (abs tipo) 2) (>= (- j 1) 1) (>= (- i 1) 1) (EQ (nth (- j 2) (nth (- i 2) tablero) ) 0)) (setq mov (list (- i 1) (- j 1) 2))) ;ATRÁS DERECHA
+		            (2 (cond((and (EQ (abs tipo) 2) (>= (- j 1) 0) (>= (- i 1) 0) (EQ (nth (- j 2) (nth (- i 2) tablero) ) 0)) (setq mov (list (- i 1) (- j 1) 2))) ;ATRÁS DERECHA
 		                    (t (cond((< tipo 0) (setq tab (reversed tab)))) (format t "movHechos en case2: ~D ~%" (+ movHechos 1)) (generaMov tipo i j (incf movHechos) tab))))
 
-		            (3 (cond((and (EQ (abs tipo) 2) (<= (+ j 1) 6) (<= (- i 1) 1) (EQ (nth (+ j 1) (nth (- i 1) tablero) ) 0)) (setq mov (list (- i 1) (+ j 1) 3))) ;ATRÁS IZQUIERDA
+		            (3 (cond((and (EQ (abs tipo) 2) (<= (+ j 1) 7) (<= (- i 1) 0) (EQ (nth (+ j 1) (nth (- i 1) tablero) ) 0)) (setq mov (list (- i 1) (+ j 1) 3))) ;ATRÁS IZQUIERDA
 		                    (t(format t "movHechos en case3: ~D ~%" (+ movHechos 1))(setq mov nil))))) 
-		   		(cond (mov (list (car mov) (cadr mov) (generaTablero tipo i j (last mov) tab)))
+		   		
+
+		   		(cond ((not (null mov)) (format t "tab ~D ~%" tab) (setq r (list (car mov) (cadr mov) (generaTablero tipo i j (car(last mov)) tab))) (format t "r ~D ~%" r))
 		   			  (t nil)))
 
 		   	(t nil)))
 		
 
 (defun generaTablero(tipo i j m tab)
-	(cond((> tipo 0) (setq tab (reversed tab))))
-
-	(case movHechos
+	(cond((< tipo 0) (setq tab (reversed tab))))
+	 (format t "tipo ~D ~%" tipo)
+	 (format t "i: ~D  j: ~D ~%" i j )
+	(case m
 		;MOVIMIENTOS NORMALES
-		(1 (setf (nth j (nth i tab)) 0) (setf (nth (- j 1) (+ i 1)) tipo))
-		(2 (setf (nth j (nth i tab)) 0) (setf (nth (+ j 1) (+ i 1)) tipo))
-		(3 (setf (nth j (nth i tab)) 0) (setf (nth (- j 1) (- i 1)) tipo))
-		(4 (setf (nth j (nth i tab)) 0) (setf (nth (- j 1) (+ i 1)) tipo))
+		(0 (setf (nth j (nth i tab)) 0) (setf (nth (- j 1) (nth (+ i 1) tab)) tipo))
+		(1 (setf (nth j (nth i tab)) 0) (setf (nth (+ j 1) (nth (+ i 1) tab)) tipo))
+		(2 (setf (nth j (nth i tab)) 0) (setf (nth (- j 1) (nth (- i 1) tab)) tipo))
+		(3 (setf (nth j (nth i tab)) 0) (setf (nth (- j 1) (nth (+ i 1) tab)) tipo))
 		;SALTOS
-		(5 (setf (nth j (nth i tab)) 0) (setf (nth (- j 1) (+ i 1)) 0) (setf (nth (- j 2) (+ i 2)) tipo))
-		(6 (setf (nth j (nth i tab)) 0) (setf (nth (- j 1) (+ i 1)) 0) (setf (nth (- j 2) (+ i 2)) tipo))
-		(7 (setf (nth j (nth i tab)) 0) (setf (nth (- j 1) (+ i 1)) 0) (setf (nth (- j 2) (+ i 2)) tipo))
-		(8 (setf (nth j (nth i tab)) 0) (setf (nth (- j 1) (+ i 1)) 0) (setf (nth (- j 2) (+ i 2)) tipo)))
+		(4 (setf (nth j (nth i tab)) 0) (setf (nth (- j 1) (nth (+ i 1) tab)) 0) (setf (nth (- j 2) (nth (+ i 2) tab)) tipo))
+		(5 (setf (nth j (nth i tab)) 0) (setf (nth (+ j 1) (nth (+ i 1) tab)) 0) (setf (nth (+ j 2) (nth (+ i 2) tab)) tipo))
+		(6 (setf (nth j (nth i tab)) 0) (setf (nth (- j 1) (nth (- i 1) tab)) 0) (setf (nth (- j 2) (nth (- i 2) tab)) tipo))
+		(7 (setf (nth j (nth i tab)) 0) (setf (nth (- j 1) (nth (+ i 1) tab)) 0) (setf (nth (- j 2) (nth (+ i 2) tab)) tipo)))
 	tab)
 
 (defun generaNodo(nodo depth))
