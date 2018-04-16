@@ -1,5 +1,5 @@
 (setq h 0 finJuego 0)
-(setq tablero '() pila nil cerrado nil nodo nil poda nil)
+(setq tablero '() pila nil cerrado nil nodo nil v nil)
 (setq dobleI nil dobleJ nil)
 (setq hPieza 0 hPos 0 hMov 0 patronH 0 sumadist 0)
 
@@ -30,59 +30,109 @@
 			   (0 nil 2 nil 2 nil 1 nil)
 			   (nil 1 nil 1 nil 1 nil 0)
 			   (-1 nil 0 nil 0 nil 0 nil)))
-;nodo=(id padre cMov inix iniy finx finy  v)
+;nodo=(id padre cMov tablero  v)
 
 
 (defun inicio(dep)
-	(push '(1 nil 0 nil nil nil nil nil) pila)
-	ab((car pila) dep -999999 999999)
+	*ab((car pila) dep -999999 999999)
 
 	)
-(defun ab(tablero node depth a b)
-	(cond ((or (EQ depth 0) (finJuego)) (calculaH) (setf (nth 5 node) h) (revierteTab node) (cond((< a b) (cond((EQ (mod depth 2) 0 ) (cond((a<h)     )
-																		(t)))
-													(t (cond((b>h)(setq b h))
-																  (t)))) (generaNodo))
-											(t (setq poda t))))
-			(t (cond((> (nth 2 node) 12) (push (pop pila) cerrado) (revierteTab node) (setq nodo (sigMov)) (push nodo pila)  (ab nodo depth a b))
-					(t (cond((>= a b) (push (pop pila) cerrado) (ab  (car pila) (incf depth) a b))
-						(t (setq nodo (generaNodo node depth)) (push nodo pila) (ab nodo (decf depth) a b)))))))
-	)
+
+
+
+(defun ab(tab node depth a b)
+	(cond ((or (EQ depth 0) (finJuego)) (calculaH))
+			((eq (mod depth 2) 0) (setq v -999999) (setq movimiento (sigMov depth node tab)) (loop while movimiento  
+															do (setq v (max v (ab (nth 3 movimiento) movimiento (decf depth) a b)))
+															   (setq a (max a v))
+															   (cond((<= b a) (break))
+															   		(t (setq movimiento (sigMov depth node tab))))) return v)
+											
+			(t (setq v 999999) (setq movimiento (sigMov depth node tab)) (loop while movimiento  
+															do (setq v (min v (ab (nth 3 movimiento) movimiento (decf depth) a b)))
+															   (setq a (min b v))
+															   (cond((<= b a) (break))
+															   		(t (setq movimiento (sigMov depth node tab))))) return v))
+	
 
 
 
 (defun sigMov(prof nodo tab)
+
+
 (cond((EQ (mod prof 2) 0) (loop for i from 0 to 7 
 							    do (cond((EQ (mod i 2) 0) (loop for j from 1 to 7 by 2
-							      								do  (cond((EQ (nth j (nth i tab) 0) )
-							      										 ((EQ (nth j (nth i tab) -1)) (generaMov -1 i j (nth 2 nodo) tab) ) 	)   )
+							      								do  (cond((EQ (nth j (nth i tab) 0)))
+							      										 ((EQ (nth j (nth i tab) -1)) (generaMov -1 i j (nth 2 nodo) tab)) 
+							      										 ((EQ (nth j (nth i tab) -2)) (generaMov -2 i j (nth 2 nodo) tab)))))
+							            (t (loop for j from 0 to 6 by 2
+							      								do  (cond((EQ (nth j (nth i tab) 0)))
+							      										 ((EQ (nth j (nth i tab) -1)) (generaMov -1 i j (nth 2 nodo) tab)) 
+							      										 ((EQ (nth j (nth i tab) -2)) (generaMov -2 i j (nth 2 nodo) tab))))))))
+	(t (loop for i from 0 to 7 
+		    do (cond((EQ (mod i 2) 0) (loop for j from 1 to 7 by 2
+		      								do  (cond((EQ (nth j (nth i tab) 0)))
+		      										 ((EQ (nth j (nth i tab) 1)) (generaMov 1 i j (nth 2 nodo) tab)) 
+		      										 ((EQ (nth j (nth i tab) 2)) (generaMov 2 i j (nth 2 nodo) tab)))))
+		            (t (loop for j from 0 to 6 by 2
+		      								do  (cond((EQ (nth j (nth i tab) 0)))
+		      										 ((EQ (nth j (nth i tab) 1)) (generaMov 1 i j (nth 2 nodo) tab)) 
+		      										 ((EQ (nth j (nth i tab) 2)) (generaMov 2 i j (nth 2 nodo) tab))))))))
+
 
 (defun generaMov(tipo i j movHechos tab)
-	(cond((EQ (abs tipo) 1)) (cond((< tipo 0)(cond((and (not (< (- j 1) 0)) (not (> (+ i 1) 7))) 
-															(cond((EQ (nth (- j 1) (nth (+ i 1) tablero) ) 0) (cond((and (not (< (- j 2) 0)) (not (> (+ i 2) 7) ) (EQ (nth (- j 2) (nth (+ i 2) tablero) ) 0))
-																					 								(cond ((saltoDoble (+ i 2) (- j 2)) return (list (dobleI) (dobleJ)))
-																					 									  (t return (list (+ i 2) (- j 2)))))))
-																 (t nil))) 
-															 
-												  (t nil)) ;falta, hacer recursion en genera mov para case 2 		 				
-																					 			
-									(t (cond((and (not (< (- j 1) 0)) (not (> (+ i 1) 7))) 
-															(cond((EQ (nth (- j 1) (reverse (nth (+ i 1) (reverse tablero)))) 0) (cond((and (not (< (- j 2) 0)) (not (> (+ i 2) 7) ) (EQ (nth (- j 2) (reverse (nth (+ i 2) (reverse tablero)))) 0))
-																										 								(cond ((saltoDoble (+ i 2) (- j 2)) return (list (dobleI) (dobleJ)))
-																										 									  (t return (list (+ i 2) (- j 2)))))
-																																		(t return (list (+ i 2) (- j 2)) )))
-																 (t nil))) 
-															 
-												  (t nil)) ;falta, hacer recursion en genera mov para case 2     ))
+
+	(cond((< movHechos 2)   ;mov para peones 
+	 (case movHechos
+		(0 (cond((> tipo 0) (setq tab (reversed tab))))
+					(cond((and  (>= (- j 1) 1) (<= (+ i 1) 6)) ;derecha adelante <- bien
+												(cond((EQ (nth (- j 1) (nth (+ i 1) tablero) ) 0)  return (list (+ i 1) (- j 1)))
+													 (t (cond((and (>= (- j 2) 2) (<= (+ i 2) 5) ) (EQ (nth (- j 2) (nth (+ i 2) tablero) ) 0))
+																		 								(cond ((saltoDoble tipo (+ i 2) (- j 2)) return (list (dobleI) (dobleJ)))
+																		 									  (t return (list (+ i 2) (- j 2))))) 
+									  							(t (cond((> tipo 0) (setq tab (reversed tab)))) (generaMov tipo i j (incf movHechos) tab))))) ;falta, hacer recursion en genera mov para case 2 
+						 (t (cond((> tipo 0) (setq tab (reversed tab)))) (generaMov tipo i j (incf movHechos) tab))))
+
+		(1 (cond((> tipo 0) (setq tab (reversed tab)))) ;izquierda adelante -> bien
+					(cond((and  (<= (+ j 1) 6) (<= (+ i 1) 6)) 
+												(cond((EQ (nth (+ j 1) (nth (+ i 1) tablero) ) 0)  return (list (+ i 1) (+ j 1)))
+													 (t (cond((and (<= (+ j 2) 5) (<= (+ i 2) 5) ) (EQ (nth (+ j 2) (nth (+ i 2) tablero) ) 0))
+																		 								(cond ((saltoDoble tipo (+ i 2) (+ j 2)) return (list (dobleI) (dobleJ)))
+																		 									  (t return (list (+ i 2) (+ j 2))))) 
+									  							(t (cond((> tipo 0) (setq tab (reversed tab)))) (generaMov tipo i j (incf movHechos) tab))))) ;falta, hacer recursion en genera mov para case 2 
+						 (t (cond((> tipo 0) (setq tab (reversed tab)))) (generaMov tipo i j (incf movHechos) tab))))
+      ))
 
 
+	((EQ (abs tipo) 2)   
 
+	(case movHechos		;mov para rey
+		(2 (cond((> tipo 0) (setq tab (reversed tab)))) ;derecha atrás <- bien
+					(cond((and  (>= (- j 1) 1) (>= (- i 1) 1)) 
+												(cond((EQ (nth (- j 1) (nth (- i 1) tablero) ) 0)  return (list (- i 1) (- j 1)))
+													 (t (cond((and (>= (- j 2) 2) (>= (- i 2) 2) ) (EQ (nth (- j 2) (nth (- i 2) tablero) ) 0))
+																		 								(cond ((saltoDoble tipo (- i 2) (- j 2)) return (list (dobleI) (dobleJ)))
+																		 									  (t return (list (- i 2) (- j 2))))) 
+									  							(t (cond((> tipo 0) (setq tab (reversed tab)))) (generaMov tipo i j (incf movHechos) tab))))) ;falta, hacer recursion en genera mov para case 2 
+						 (t (cond((> tipo 0) (setq tab (reversed tab)))) (generaMov tipo i j (incf movHechos) tab))))
+
+		(3 (cond((> tipo 0) (setq tab (reversed tab)))) ;izq atrás bien
+					(cond((and  (<= (+ j 1) 6) (>= (- i 1) 1)) 
+												(cond((EQ (nth (+ j 1) (nth (+ i 1) tablero) ) 0)  return (list (+ i 1) (+ j 1)))
+													 (t (cond((and (<= (+ j 2) 5) (>= (- i 2) 2) ) (EQ (nth (+ j 2) (nth (+ i 2) tablero) ) 0))
+																		 								(cond ((saltoDoble tipo (+ i 2) (+ j 2)) return (list (dobleI) (dobleJ)))
+																		 									  (t return (list (+ i 2) (+ j 2))))) 
+									  							(t (cond((> tipo 0) (setq tab (reversed tab)))) (generaMov tipo i j (incf movHechos) tab))))) ;falta, hacer recursion en genera mov para case 2 
+						 (t (cond((> tipo 0) (setq tab (reversed tab)))) (generaMov tipo i j (incf movHechos) tab))))
+      ))
+
+	(t nil))
 
 
 	)
-		(loop while (< movHechos 4)))
+		
 
-(defun saltoDoble(tipo i j)
+(defun saltoDoble(tipo i j tab)
 
 	)
 
@@ -92,6 +142,10 @@
 	(setq h (+ (cuentaPiezasH) (posTab) (hMov) (runAwayH))))
 
 
+(defun reversed(l)
+  (cond ((null l) nil )
+        ((listp (car l)) (append (reversed (cdr l)) (list (reversed (car l)))))
+        ((append (reversed(cdr l)) (list (car l))))))
 
 (defun cuentaPiezasH()
 (let ((c 0))                      
@@ -149,7 +203,6 @@ hMov)
 		)
 	)
 
-(defun revierteTab())
 
 
 ;checar si hay fichas de ambos jugadores, si ambos tienen fichas checar si tienen movimientos, si uno no tiene movimientos, fin de juego
