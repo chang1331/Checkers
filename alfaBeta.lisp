@@ -1,8 +1,7 @@
 (setq h 0 finJuego 0)
-(setq tablero '() ids 1 cerrado nil nodo nil v nil)
+(setq tablero '() ids 1 cerrado nil nodo nil v nil c 0)
 (setq movimiento nil res nil)
-(setq hPieza 0 hPos 0 hMov 0 patronH 0 sumadist 0)
-
+(setq hPieza 0 hPos 0 hMov 0 patronH 0 sumadist 0 h 0)
 (setq tabPeonT '((nil 0 nil 0 nil 0 nil 0)
 			     (6 nil 5 nil 5 nil 5 nil)
 				 (nil 4 nil 4 nil 4 nil 5)
@@ -45,19 +44,20 @@
 (setq n '(1 nil 0 tablero nil))
 
 (defun ab(tab node depth a b)
-	(format t "ab tab: ~D ~%" tab)
-	(cond ((or (EQ depth 0)) (calculaH))
+	(format t "a: ~D ~%" a)
+	(format t "b: ~D ~%" b)
+	(cond ((EQ depth 0) (calculaH tab) (incf depth))
 			((eq (mod depth 2) 0) (setq v -999999) (setq movimiento (sigMov depth node tab))  (loop while (not(null movimiento))  
-															do (setq v (max v (ab (nth 3 movimiento) movimiento (decf depth) a b)))
+															do (setq v (max v (ab (nth 3 movimiento) movimiento (- depth 1) a b)))
 															   (setq a (max a v))
 															   (cond((<= b a) (break))
-															   		(t (setq movimiento (sigMov depth movimiento tab))))) return v)
+															   		(t (setq movimiento (sigMov depth movimiento tab))))) (return v))
 											
 			(t (setq v 999999) (setq movimiento (sigMov depth node tab)) (loop while (not(null movimiento))   
-															do (setq v (min v (ab (nth 3 movimiento) movimiento (decf depth) a b)))
+															do (setq v (min v (ab (nth 3 movimiento) movimiento (- depth 1) a b)))
 															   (setq a (min b v))
 															   (cond((<= b a) (break))
-															   		(t (setq movimiento (sigMov depth movimiento tab))))) return v)))
+															   		(t (setq movimiento (sigMov depth movimiento tab))))) (return v))))
 
 
 
@@ -119,17 +119,17 @@
 			   	#|(format t "movHechos en saltos: ~D ~%" movHechos)|#
 			   (case movHechos
 			   		;SALTOS
-			   		(4 (cond((and  (>= (- j 2) 2) (<= (+ i 2) 5) (EQ (nth (- j 2) (nth (+ i 2) tablero)) 0)) (setq mov (list (+ i 2) (- j 2) 4))) ;SALTO ADELANTE DERECHA
+			   		(4 (cond((and  (>= (- j 2) 2) (<= (+ i 2) 5) (EQ (nth (- j 2) (nth (+ i 2) tab)) 0)) (setq mov (list (+ i 2) (- j 2) 4))) ;SALTO ADELANTE DERECHA
 							(t (generaMov tipo i j (incf movHechos) tab))))  
 																														   
-		            (5 (cond((and  (<= (+ j 2) 5) (<= (+ i 2) 5) (EQ (nth (+ j 2) (nth (+ i 2) tablero) ) 0)) (setq mov (list (+ i 2) (+ j 2) 5))) ;SALTO ADELANTE IZQUIERDA
+		            (5 (cond((and  (<= (+ j 2) 5) (<= (+ i 2) 5) (EQ (nth (+ j 2) (nth (+ i 2) tab) ) 0)) (setq mov (list (+ i 2) (+ j 2) 5))) ;SALTO ADELANTE IZQUIERDA
 		            																						  		
 		                    (t (generaMov tipo i j (incf movHechos) tab))))
 
-		            (6 (cond((and (EQ (abs tipo) 2) (>= (- j 2) 2) (>= (- i 2) 2) (EQ (nth (- j 2) (nth (- i 2) tablero)) 0)) (setq mov (list (- i 2) (- j 2) 6))) ;SALTO ATRÁS DERECHA 
+		            (6 (cond((and (EQ (abs tipo) 2) (>= (- j 2) 2) (>= (- i 2) 2) (EQ (nth (- j 2) (nth (- i 2) tab)) 0)) (setq mov (list (- i 2) (- j 2) 6))) ;SALTO ATRÁS DERECHA 
 		                    (t (generaMov tipo i j (incf movHechos) tab))))
 
-		            (7 (cond((and (EQ (abs tipo) 2) (<= (+ j 2) 5) (<= (- i 2) 2) (EQ (nth (+ j 2) (nth (- i 2) tablero)) 0)) (setq mov (list (- i 2) (+ j 2) 7))) ;SALTO ATRÁS DERECHA
+		            (7 (cond((and (EQ (abs tipo) 2) (<= (+ j 2) 5) (<= (- i 2) 2) (EQ (nth (+ j 2) (nth (- i 2) tab)) 0)) (setq mov (list (- i 2) (+ j 2) 7))) ;SALTO ATRÁS DERECHA
 		                    (t (generaMov tipo i j (incf movHechos) tab))))
 		           )
 
@@ -180,8 +180,8 @@
 
 (defun generaNodo(nodo depth))
 
-(defun calculaH()
-	(setq h (+ (cuentaPiezasH) (posTab) #|(hMov) (runAwayH)|#)))
+(defun calculaH(tab)
+	(setq h (+ (cuentaPiezasH tab) (posTab tab) #|(hMov) (runAwayH)|#)) (format t "heuristica ~D ~%" h)   h)
 
 
 (defun reversed(l)
@@ -189,9 +189,9 @@
         ((listp (car l)) (append (reversed (cdr l)) (list (reversed (car l)))))
         ((append (reversed(cdr l)) (list (car l))))))
 
-(defun cuentaPiezasH() ;funciona
-(let ((c 0))                      
-  (loop for x in tablero   ;x= primer elemento de lista Tablero (nil val1 nil val2 nil val3 nil val4)
+(defun cuentaPiezasH(tab) ;funciona
+  (setq c 0)               
+  (loop for x in tab   ;x= primer elemento de lista Tablero (nil val1 nil val2 nil val3 nil val4)
       do (cond((EQ (nth 0 x) nil) (loop for i from 1 to 7 by 2
       								do  (cond((EQ (nth i x) 0))				 ;pos vacia
       										 ((EQ (nth i x) 1) (incf c 10))  ;pos con mi peón
@@ -204,22 +204,22 @@
 									((EQ (nth i x) 2) (incf c 13))  ;pos con mi rey
 									((EQ (nth i x) -1) (decf c 10)) ;pos con su peón
 									(t (decf c 13)))))))            ;pos con su rey
-c))          
+c)         
 	
 
-(defun posTab() ;biuen?
+(defun posTab(tab) ;biuen?
 (loop for i from 0 to 7   ;x= primer elemento de lista Tablero (nil val1 nil val2 nil val3 nil val4)
   do (cond((EQ (mod i 2) 0) (loop for j from 1 to 7 by 2
-  								do (cond((EQ (nth j (nth i tablero)) 0))				 ;pos vacia
-  										 ((EQ (nth j (nth i tablero)) 1) (incf hPos (nth j (nth i tabPeonY))))  ;pos con mi peón
-  										 ((EQ (nth j (nth i tablero)) 2) (incf hPos (nth j (nth i tabRey)))) ;pos con mi rey
-  										 ((EQ (nth j (nth i tablero)) -1) (decf hPos (nth j (nth i tabPeonT)))) ;pos con su peón
+  								do (cond((EQ (nth j (nth i tab)) 0))				 ;pos vacia
+  										 ((EQ (nth j (nth i tab)) 1) (incf hPos (nth j (nth i tabPeonY))))  ;pos con mi peón
+  										 ((EQ (nth j (nth i tab)) 2) (incf hPos (nth j (nth i tabRey)))) ;pos con mi rey
+  										 ((EQ (nth j (nth i tab)) -1) (decf hPos (nth j (nth i tabPeonT)))) ;pos con su peón
   										 (t (decf hPos (nth j (nth i tabRey)))))))				 ;pos con su rey
   			(t (loop for j from 0 to 6 by 2
-					do (cond((EQ (nth j (nth i tablero)) 0))				 ;pos vacia
-								 ((EQ (nth j (nth i tablero)) 1) (incf hPos (nth j (nth i tabPeonY))))  ;pos con mi peón
-								 ((EQ (nth j (nth i tablero)) 2) (incf hPos (nth j (nth i tabRey)))) ;pos con mi rey
-								 ((EQ (nth j (nth i tablero)) -1) (decf hPos (nth j (nth i tabPeonT)))) ;pos con su peón
+					do (cond((EQ (nth j (nth i tab)) 0))				 ;pos vacia
+								 ((EQ (nth j (nth i tab)) 1) (incf hPos (nth j (nth i tabPeonY))))  ;pos con mi peón
+								 ((EQ (nth j (nth i tab)) 2) (incf hPos (nth j (nth i tabRey)))) ;pos con mi rey
+								 ((EQ (nth j (nth i tab)) -1) (decf hPos (nth j (nth i tabPeonT)))) ;pos con su peón
 								 (t (decf hPos (nth j (nth i tabRey)))))))))
 hPos)           ;pos con su rey
 								
